@@ -1,3 +1,11 @@
+# repo specific
+*runs/
+*rl_scratch_exp/
+*bcrl_exp/
+*dapg_exp/
+*wandb/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
