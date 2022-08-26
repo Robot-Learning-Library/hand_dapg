@@ -1,5 +1,17 @@
 # DAPG for Dexterous Hand Manipulation
 
+## Modified version:
+Run with:
+```
+cd dapg/examples
+python job_script.py --output rl_scratch_exp --config rl_scratch.txt --record_video True --save_id 0 --wandb_activate True --wandb_entity *
+```
+or just:
+```
+./launch.sh
+```
+Note that `--record_video` and `--render` cannot be used at the same time for now.
+
 This accompanies the [DAPG project](https://sites.google.com/view/deeprl-dexterous-manipulation), presented at RSS 2018. Please see the project page for the paper and video demonstration of results.
 
 <td><img src="assets/task_banner.jpg""></td>
