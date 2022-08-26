@@ -72,7 +72,7 @@ if args.wandb_activate:
         args.wandb_group = ''
     if len(args.wandb_name) == 0:
         args.wandb_name = str('_'.join([job_data['env'], job_data['algorithm'], args.save_id]))
-init_wandb(args)
+    init_wandb(args)
 
 # ===============================================================================
 # Train Loop
