@@ -39,7 +39,6 @@ parser.add_argument('--wandb_entity', type=str, default='', help='wandb entity')
 parser.add_argument('--wandb_project', type=str, default='', help='wandb project')
 parser.add_argument('--wandb_group', type=str, default='', help='wandb group')
 parser.add_argument('--wandb_name', type=str, default='', help='wandb name')
-parser.add_argument('--save_id', type=str, default='0', help='identification number for each run')
 
 args = parser.parse_args()
 # if not specified
@@ -71,7 +70,7 @@ if args.wandb_activate:
     if len(args.wandb_group) == 0:
         args.wandb_group = ''
     if len(args.wandb_name) == 0:
-        args.wandb_name = str('_'.join([job_data['env'], job_data['algorithm'], args.save_id]))
+        args.wandb_name = str('_'.join([job_data['env'], job_data['algorithm']]))
 init_wandb(args)
 
 # ===============================================================================
