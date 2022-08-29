@@ -14,6 +14,9 @@ from mjrl.algos.behavior_cloning import BC
 from mjrl.utils.train_agent import train_agent
 from mjrl.samplers.core import sample_paths
 from mjrl.utils.wandb import init_wandb
+from mjrl.utils.fc_network import FCNetwork
+from mjrl.algos.npg_discrim import NPGDiscriminator
+
 import os
 import json
 import mjrl.envs
@@ -58,7 +61,7 @@ if not os.path.exists(JOB_DIR):
 with open(args.config, 'r') as f:
     job_data = eval(f.read())
 assert 'algorithm' in job_data.keys()
-assert any([job_data['algorithm'] == a for a in ['NPG', 'BCRL', 'DAPG']])
+assert any([job_data['algorithm'] == a for a in ['NPG', 'BCRL', 'DAPG', 'NPGDiscriminator']])
 job_data['lam_0'] = 0.0 if 'lam_0' not in job_data.keys() else job_data['lam_0']
 job_data['lam_1'] = 0.0 if 'lam_1' not in job_data.keys() else job_data['lam_1']
 EXP_FILE = JOB_DIR + '/job_config.json'
@@ -126,9 +129,13 @@ elif job_data['algorithm'] == 'DAPG':
                     lam_0=job_data['lam_0'], lam_1=job_data['lam_1'],
                     seed=job_data['seed'], save_logs=True
                     )
+elif job_data['algorithm'] == 'NPGDiscriminator':
+    discriminator = FCNetwork(e.spec.observation_dim+e.spec.action_dim, 1, hidden_sizes=job_data['policy_size'], output_nonlinearity='sigmoid')
+    rl_agent = NPGDiscriminator(e, policy, baseline, discriminator, demo_paths, normalized_step_size=job_data['rl_step_size'],
+                seed=job_data['seed'], save_logs=True)
 else:
     raise NotImplementedError
-    
+
 print("========================================")
 print("Starting reinforcement learning phase")
 print("========================================")
