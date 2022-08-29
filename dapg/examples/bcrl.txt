@@ -5,7 +5,7 @@
 'env'           :   'relocate-v0',
 'algorithm'     :   'BCRL',
 'seed'          :   123,
-'num_cpu'       :   5,
+'num_cpu'       :   2,
 'save_freq'     :   25,
 'eval_rollouts' :   25,
 'exp_notes'     :   'Example config for initializing policy with behavior cloning and finetuning with NPG.',
