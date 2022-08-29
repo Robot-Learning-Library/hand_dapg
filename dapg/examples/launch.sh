@@ -1,7 +1,7 @@
 DATE=`date '+%Y%m%d_%H%M'`
 echo "Save as: " $DATE
 mkdir -p log/$DATE
-
+mkdir -p results/$DATE
 declare -a tasks=('rl_scratch' 'bcrl' 'dapg')
 
 for i in ${!tasks[@]}; do
