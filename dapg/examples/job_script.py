@@ -117,13 +117,18 @@ if job_data['algorithm'] != 'DAPG':
 # ===============================================================================
 # RL Loop
 # ===============================================================================
-
-rl_agent = DAPG(e, policy, baseline, demo_paths,
-                normalized_step_size=job_data['rl_step_size'],
-                lam_0=job_data['lam_0'], lam_1=job_data['lam_1'],
-                seed=job_data['seed'], save_logs=True
-                )
-
+if job_data['algorithm'] in ['NPG', 'BCRL']:
+    rl_agent = NPG(e, policy, baseline, normalized_step_size=job_data['rl_step_size'],
+            seed=job_data['seed'], save_logs=True)
+elif job_data['algorithm'] == 'DAPG':
+    rl_agent = DAPG(e, policy, baseline, demo_paths,
+                    normalized_step_size=job_data['rl_step_size'],
+                    lam_0=job_data['lam_0'], lam_1=job_data['lam_1'],
+                    seed=job_data['seed'], save_logs=True
+                    )
+else:
+    raise NotImplementedError
+    
 print("========================================")
 print("Starting reinforcement learning phase")
 print("========================================")
