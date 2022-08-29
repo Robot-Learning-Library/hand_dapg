@@ -113,7 +113,7 @@ if job_data['algorithm'] != 'NPG':
         score = e.evaluate_policy(policy, num_episodes=job_data['eval_rollouts'], mean_action=True)
         print("Score with behavior cloning = %f" % score[0][0])
 
-if job_data['algorithm'] != 'DAPG':
+if not job_data['algorithm'] in ['DAPG', 'NPGDiscriminator']:
     # We throw away the demo data when training from scratch or fine-tuning with RL without explicit augmentation
     demo_paths = None
 
