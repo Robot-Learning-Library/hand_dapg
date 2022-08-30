@@ -35,7 +35,7 @@ parser.add_argument('--output', type=str, required=True, help='location to store
 parser.add_argument('--config', type=str, required=True, help='path to config file with exp params')
 parser.add_argument('--render', type=bool, default=False, help='render the scene')
 parser.add_argument('--record_video', type=bool, default=False, help='whether recording the video')
-parser.add_argument('--record_video_interval', type=int, default=10000, help='record video interval')
+parser.add_argument('--record_video_interval', type=int, default=100, help='record video interval (episode)')
 parser.add_argument('--record_video_length', type=int, default=100, help='record video length')
 parser.add_argument('--wandb_activate', type=bool, default=False, help='activate wandb for logging')
 parser.add_argument('--wandb_entity', type=str, default='', help='wandb entity')
@@ -46,10 +46,10 @@ parser.add_argument('--save_id', type=str, default='0', help='identification num
 
 args = parser.parse_args()
 # if not specified
-if args.record_video_interval is None:
-    args['record_video_interval'] = 100000
-if args.record_video_length is None:
-    args['record_video_length'] = 100
+# if args.record_video_interval is None:
+#     args['record_video_interval'] = 2
+# if args.record_video_length is None:
+#     args['record_video_length'] = 100
 print("If render, do 'export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libGLEW.so'.")
 print("If record video, undo 'export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libGLEW.so'.")
 
