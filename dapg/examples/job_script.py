@@ -67,14 +67,14 @@ job_data['lam_1'] = 0.0 if 'lam_1' not in job_data.keys() else job_data['lam_1']
 EXP_FILE = JOB_DIR + '/job_config.json'
 with open(EXP_FILE, 'w') as f:
     json.dump(job_data, f, indent=4)
-
+log_dir = str('_'.join([job_data['env'], job_data['algorithm'], args.save_id]))
 if args.wandb_activate:
     if len(args.wandb_project) == 0:
         args.wandb_project = 'hand_dapg'
     if len(args.wandb_group) == 0:
         args.wandb_group = ''
     if len(args.wandb_name) == 0:
-        args.wandb_name = str('_'.join([job_data['env'], job_data['algorithm'], args.save_id]))
+        args.wandb_name = log_dir
     init_wandb(args)
 
 # ===============================================================================
@@ -122,17 +122,17 @@ if not job_data['algorithm'] in ['DAPG', 'NPGDiscriminator']:
 # ===============================================================================
 if job_data['algorithm'] in ['NPG', 'BCRL']:
     rl_agent = NPG(e, policy, baseline, normalized_step_size=job_data['rl_step_size'],
-            seed=job_data['seed'], save_logs=True)
+            seed=job_data['seed'], save_logs=True, log_dir=log_dir)
 elif job_data['algorithm'] == 'DAPG':
     rl_agent = DAPG(e, policy, baseline, demo_paths,
                     normalized_step_size=job_data['rl_step_size'],
                     lam_0=job_data['lam_0'], lam_1=job_data['lam_1'],
-                    seed=job_data['seed'], save_logs=True
+                    seed=job_data['seed'], save_logs=True, log_dir=log_dir
                     )
 elif job_data['algorithm'] == 'NPGDiscriminator':
     discriminator = FCNetwork(e.spec.observation_dim+e.spec.action_dim, 1, hidden_sizes=job_data['policy_size'], output_nonlinearity='sigmoid')
     rl_agent = NPGDiscriminator(e, policy, baseline, discriminator, demo_paths, normalized_step_size=job_data['rl_step_size'],
-                seed=job_data['seed'], save_logs=True)
+                seed=job_data['seed'], save_logs=True, log_dir=log_dir)
 else:
     raise NotImplementedError
 
