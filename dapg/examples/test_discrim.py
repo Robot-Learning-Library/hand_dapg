@@ -82,7 +82,16 @@ e = GymEnv(job_data['env'])
 policy = MLP(e.spec, hidden_sizes=job_data['policy_size'], seed=job_data['seed'])
 baseline = MLPBaseline(e.spec, reg_coef=1e-3, batch_size=job_data['vf_batch_size'],
                        epochs=job_data['vf_epochs'], learn_rate=job_data['vf_learn_rate'])
-discriminator = FCNetwork(e.spec.observation_dim+e.spec.action_dim, 1, hidden_sizes=job_data['policy_size'], output_nonlinearity='sigmoid')
+FRAME_NUM = 3
+STATE_ONLY = True
+hand_dim = 24
+# discriminator = FCNetwork(e.spec.observation_dim+e.spec.action_dim, 1, hidden_sizes=job_data['policy_size'], output_nonlinearity='sigmoid')
+if STATE_ONLY:
+    discriminator = FCNetwork(FRAME_NUM*hand_dim, 1, hidden_sizes=job_data['policy_size'], output_nonlinearity='sigmoid')
+else:
+    discriminator = FCNetwork(FRAME_NUM*2*hand_dim, 1, hidden_sizes=job_data['policy_size'], output_nonlinearity='sigmoid')
+
+
 
 # Get demonstration data if necessary and behavior clone
 if job_data['algorithm'] != 'NPG':
@@ -114,7 +123,7 @@ if job_data['algorithm'] != 'NPG':
 # ===============================================================================
 # RL Loop
 # ===============================================================================
-rl_agent = NPGDiscriminator(e, policy, baseline, discriminator, demo_paths, normalized_step_size=job_data['rl_step_size'],
+rl_agent = NPGDiscriminator(e, policy, baseline, discriminator, FRAME_NUM, STATE_ONLY, demo_paths, normalized_step_size=job_data['rl_step_size'],
             seed=job_data['seed'], save_logs=True)
 
     
