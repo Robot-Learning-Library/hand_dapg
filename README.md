@@ -4,7 +4,7 @@
 Run with:
 ```
 cd dapg/examples
-python job_script.py --output rl_scratch_exp --config rl_scratch.txt --record_video True --save_id 0 --wandb_activate True --wandb_entity *
+python job_script.py --output results/rl_scratch_exp --config cfg/rl_scratch.txt --record_video True --save_id 0 --wandb_activate True --wandb_entity *
 ```
 or just:
 ```
