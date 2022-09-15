@@ -5,6 +5,7 @@
 *dapg_exp/
 *results/
 *wandb/
+*.pkl
 
 
 # Byte-compiled / optimized / DLL files
