@@ -5,7 +5,7 @@
 'env'           :   'relocate-v0',
 'algorithm'     :   'NPG',
 'seed'          :   123,
-'num_cpu'       :   5,
+'num_cpu'       :   10,
 'save_freq'     :   25,
 'eval_rollouts' :   25,
 'exp_notes'     :   'Example config for training policy with NPG from scratch on the relocate-v0 task.',
