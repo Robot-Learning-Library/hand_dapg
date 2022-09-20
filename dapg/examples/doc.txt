@@ -1,0 +1,5 @@
+collect data with RL:
+python collect_data.py --config cfg/rl_scratch_door.txt --output collect_data --record_video True
+
+train discriminator to distinguish RL collected and demo data:
+python train_discrim.py

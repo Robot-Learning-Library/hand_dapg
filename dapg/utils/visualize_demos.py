@@ -32,7 +32,7 @@ def demo_playback(env_name, demo_paths):
         actions = path['actions']
         for t in range(actions.shape[0]):
             e.step(actions[t])
-            e.env.mj_render()
+            e.env.mj_render(on_screen=True)
 
 if __name__ == '__main__':
     main()
