@@ -2,9 +2,10 @@ DATE=`date '+%Y%m%d_%H%M'`
 echo "Save as: " $DATE
 mkdir -p log/$DATE
 mkdir -p results/$DATE
-declare -a methods=('rl_scratch' 'bcrl' 'dapg' 'npg_discrim')
-declare -a envs=('relocate' 'pen' 'hammer' 'door')
-# declare -a envs=('pen' 'hammer' 'door')
+# declare -a methods=('rl_scratch' 'bcrl' 'dapg' 'npg_discrim')
+# declare -a envs=('relocate' 'pen' 'hammer' 'door')
+declare -a methods=('rl_scratch' 'bcrl' 'dapg')
+declare -a envs=('relocate')
 
 
 for i in ${!methods[@]}; do

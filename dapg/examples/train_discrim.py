@@ -10,7 +10,7 @@ cwd = os.getcwd()
 print(cwd)
 # load data
 envs = ['pen-v0', 'door-v0', 'hammer-v0']
-model = Discriminator()
+model = Discriminator(itr=int(1e5))
 
 for env in envs:
     try:
