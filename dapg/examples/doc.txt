@@ -3,3 +3,4 @@ python collect_data.py --config cfg/rl_scratch_door.txt --output collect_data --
 
 train discriminator to distinguish RL collected and demo data:
 python train_discrim.py
+python train_discrim.py --save_id 0 --wandb_activate True --wandb_entity quantumiracle --itr 100000
