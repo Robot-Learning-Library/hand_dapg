@@ -1,3 +1,6 @@
+train:
+python job_script.py --config cfg/rl_scratch_door.txt --output results/rl_scratch_door_exp --record_video True
+
 collect data with RL:
 python collect_data.py --config cfg/rl_scratch_door.txt --output collect_data --record_video True
 
