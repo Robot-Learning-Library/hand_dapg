@@ -33,7 +33,7 @@ cwd = os.getcwd()
 print(cwd)
 # load data
 envs = ['pen-v0', 'door-v0', 'hammer-v0']
-model = Discriminator(itr=args.itr)
+model = Discriminator(itr=args.itr, save_logs=True)
 
 for env in envs:
     try:

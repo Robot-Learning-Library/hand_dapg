@@ -1,7 +1,7 @@
 {
     "env": "relocate-v0",
     "algorithm": "NPG",
-    "seed": 123,
+    "seed": 42,
     "num_cpu": 10,
     "save_freq": 25,
     "eval_rollouts": 25,
