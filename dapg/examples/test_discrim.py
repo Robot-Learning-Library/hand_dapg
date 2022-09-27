@@ -22,6 +22,8 @@ import gym
 from collections import deque
 import torch
 import numpy as np
+import pygame
+
 
 # ===============================================================================
 # Get command line arguments
@@ -80,14 +82,10 @@ if not job_data['algorithm'] in ['DAPG', 'NPGDiscriminator']:
     demo_paths = None
 
 # ===============================================================================
-# RL Loop
+# RL Agent
 # ===============================================================================
 rl_agent = NPG(e, policy, baseline, normalized_step_size=job_data['rl_step_size'],
         seed=job_data['seed'], save_logs=True, log_dir=log_dir, discriminator_reward=args.discriminator_reward)
-
-print("========================================")
-print("Starting reinforcement learning phase")
-print("========================================")
 
 if args.record_video and not args.render:
     e.on_screen = False
@@ -124,6 +122,21 @@ discriminator = model.discriminator
 obs_buffer = deque(maxlen=model.frame_num)
 act_buffer = deque(maxlen=model.frame_num)
 
+fps = 10 # render frequency
+background_colour = (255, 255, 255)
+
+def init_screen(background_colour):
+    # set pygame window position
+    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (800,1000)
+    pygame.init()
+    
+    clock = pygame.time.Clock()
+    SIZE = WIDTH, HEIGHT = (400, 100)
+    screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
+    screen.fill(background_colour)
+    myFont = pygame.font.SysFont("arial", 100)
+    return screen, myFont, clock
+
 def rollout(env, policy, num_traj=3, eval_mode=False, env_kwargs=None):
     # get the correct env behavior
     if type(env) == str:
@@ -136,6 +149,7 @@ def rollout(env, policy, num_traj=3, eval_mode=False, env_kwargs=None):
         print("Unsupported environment format")
         raise AttributeError
 
+
     horizon = env.horizon
     paths = []
 
@@ -147,10 +161,12 @@ def rollout(env, policy, num_traj=3, eval_mode=False, env_kwargs=None):
         env_infos = []
 
         o = env.reset()
+    
+        screen, myFont, clock = init_screen(background_colour)
         done = False
         t = 0
 
-        path = rl_paths[ep]  # rl_paths or demo_paths
+        path = demo_paths[ep]  # rl_paths or demo_paths
         action_seq = path['actions']
         while t < horizon and t<len(action_seq) and done != True:
             # a, agent_info = policy.get_action(o)
@@ -161,8 +177,10 @@ def rollout(env, policy, num_traj=3, eval_mode=False, env_kwargs=None):
             act_buffer.append(a)
             env_info_base = env.get_env_infos()
             next_o, r, done, env_info_step = env.step(a)
+
             if env.on_screen:
                 env.render()
+
             # below is important to ensure correct env_infos for the timestep
             env_info = env_info_step if env_info_base == {} else env_info_base
             observations.append(o)
@@ -179,5 +197,14 @@ def rollout(env, policy, num_traj=3, eval_mode=False, env_kwargs=None):
                 p = discriminator(x).squeeze().detach().numpy()
 
                 print(f"Step: {t}, discriminator output: {p}")
+
+                dt = clock.tick(fps) / 1000
+                screen.fill(background_colour)  # clear screen
+                text = myFont.render(str(p)[:4], True, (0, 0, 0))  # (r,g,b)
+                screen.blit(text, (0, 0)) # (x, y)
+                coef = 80
+                pygame.draw.rect(screen, [0, 255, 0], [240, coef*(1-p)+15, 40, coef*p], 0)  # (r,g,b) (left, top, width, height)
+                pygame.display.update()
+
 
 rollout(e, rl_agent.policy)
