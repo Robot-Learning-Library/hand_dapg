@@ -102,7 +102,7 @@ if args.record_video and not args.render:
 else:
     e.on_screen = True
 
-env_name = ['pen-v0', 'door-v0', 'hammer-v0'][0]
+env_name = ['relocate-v0', 'pen-v0', 'door-v0', 'hammer-v0'][0]
 # load rl collected paths
 rl_data_dir = f"collect_data/data/{env_name}"
 with open(rl_data_dir+'.pkl', 'rb') as f:
@@ -127,14 +127,17 @@ background_colour = (255, 255, 255)
 
 def init_screen(background_colour):
     # set pygame window position
-    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (800,1000)
+    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (600,900)  # (x, y)
     pygame.init()
     
     clock = pygame.time.Clock()
-    SIZE = WIDTH, HEIGHT = (400, 100)
-    screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
+    SIZE = WIDTH, HEIGHT = (400, 200)
+    # screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
+    screen = pygame.display.set_mode(SIZE)
     screen.fill(background_colour)
-    myFont = pygame.font.SysFont("arial", 100)
+    myFont1 = pygame.font.SysFont("arial", 30)
+    myFont2 = pygame.font.SysFont("arial", 100)
+    myFont = [myFont1, myFont2]
     return screen, myFont, clock
 
 def rollout(env, policy, num_traj=3, eval_mode=False, env_kwargs=None):
@@ -176,6 +179,8 @@ def rollout(env, policy, num_traj=3, eval_mode=False, env_kwargs=None):
             obs_buffer.append(o)
             act_buffer.append(a)
             env_info_base = env.get_env_infos()
+            # noise = np.random.uniform(-1, 1, a.shape[0])
+            # a += noise
             next_o, r, done, env_info_step = env.step(a)
 
             if env.on_screen:
@@ -195,15 +200,20 @@ def rollout(env, policy, num_traj=3, eval_mode=False, env_kwargs=None):
                 sample = torch.FloatTensor(sample)
                 x = feature(sample)
                 p = discriminator(x).squeeze().detach().numpy()
+                str_p = "{:.4f}". format(p)  # remove e form
+                print(f"Step: {t}, discriminator output: {str_p}")
 
-                print(f"Step: {t}, discriminator output: {p}")
-
+                # render discriminator score
                 dt = clock.tick(fps) / 1000
                 screen.fill(background_colour)  # clear screen
-                text = myFont.render(str(p)[:4], True, (0, 0, 0))  # (r,g,b)
-                screen.blit(text, (0, 0)) # (x, y)
-                coef = 80
-                pygame.draw.rect(screen, [0, 255, 0], [240, coef*(1-p)+15, 40, coef*p], 0)  # (r,g,b) (left, top, width, height)
+                fixed_text = myFont[0].render('Discriminator Output:', True, (0, 0, 0))  # (r,g,b)
+                text = myFont[1].render(str_p[:4], True, (0, 0, 0))  # (r,g,b)  
+                screen.blit(fixed_text, (0, 0)) # (x, y)
+                screen.blit(text, (50, 50)) # (x, y)
+                coef = 100
+                radius = 2
+                pygame.draw.rect(screen, [0, 0, 0], [340-radius, 50-radius, 40+radius, coef+radius], 2)  # borders of bar
+                pygame.draw.rect(screen, [0, 0, 255], [340, coef*(1-p)+50, 40, coef*p], 0)  # (r,g,b) (left, top, width, height), line width
                 pygame.display.update()
 
 
