@@ -68,6 +68,7 @@ job_data['lam_1'] = 0.0 if 'lam_1' not in job_data.keys() else job_data['lam_1']
 EXP_FILE = JOB_DIR + '/job_config.json'
 with open(EXP_FILE, 'w') as f:
     json.dump(job_data, f, indent=4)
+print(f'Configurations: \n ------------------------------------------------\n{job_data}')
 log_dir = str('_'.join([job_data['env'], job_data['algorithm'], args.save_id]))
 if args.wandb_activate:
     if len(args.wandb_project) == 0:
