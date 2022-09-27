@@ -115,9 +115,16 @@ with open(demo_data_dir+'.pickle', 'rb') as f:
 hand_dim = 24
 
 model = Discriminator()
-model.load_model(path='./model/model')
-feature = model.feature
-discriminator = model.discriminator
+# load standard model, with model class defined
+# model.load_model(path='./model/model')
+# feature = model.feature
+# discriminator = model.discriminator
+
+# load torchscript model, no need for defination of model class
+feature = torch.jit.load('./model/model_feature.pt')
+discriminator = torch.jit.load('./model/model_discriminator.pt')
+feature.eval()
+discriminator.eval()
 
 obs_buffer = deque(maxlen=model.frame_num)
 act_buffer = deque(maxlen=model.frame_num)
