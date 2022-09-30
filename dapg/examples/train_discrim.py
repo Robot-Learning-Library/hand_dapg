@@ -5,7 +5,7 @@ import os
 import argparse
 from mjrl.algos.discriminator import Discriminator
 from mjrl.utils.wandb import init_wandb
-
+from common import Envs
 
 parser = argparse.ArgumentParser(description='Train discriminator.')
 parser.add_argument('--itr', type=int, default=10000, help='training epochs')
@@ -15,6 +15,7 @@ parser.add_argument('--wandb_project', type=str, default='', help='wandb project
 parser.add_argument('--wandb_group', type=str, default='', help='wandb group')
 parser.add_argument('--wandb_name', type=str, default='', help='wandb name')
 parser.add_argument('--save_id', type=str, default='0', help='identification number for each run')
+parser.add_argument('--leave_one_out', type=str, default=None, help='leave one environment for test, the rest for training')
 
 args = parser.parse_args()
 if args.wandb_activate:
@@ -32,7 +33,9 @@ ts = timer.time()
 cwd = os.getcwd()
 print(cwd)
 # load data
-envs = ['pen-v0', 'door-v0', 'hammer-v0']
+if args.leave_one_out is not None:
+    envs = Envs
+    envs.remove(args.leave_one_out)
 model = Discriminator(itr=args.itr, save_logs=True)
 
 for env in envs:
@@ -55,5 +58,5 @@ print("========================================")
 print("Starting discriminator training phase")
 print("========================================")
 
-model.train()
+model.train(model_path=f'./model/no_{str(args.leave_one_out)}/')
 print("time taken = %f" % (timer.time()-ts))

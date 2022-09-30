@@ -1,0 +1,1 @@
+Envs = ['relocate-v0' 'pen-v0', 'door-v0', 'hammer-v0']
