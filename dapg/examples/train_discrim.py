@@ -39,7 +39,7 @@ print(cwd)
 if args.leave_one_out is not None:
     envs = Envs
     envs.remove(args.leave_one_out)
-model = Discriminator(itr=args.itr, save_logs=True)
+model = Discriminator(itr=args.itr, save_logs=True, log_dir=f'./runs/discriminator_no_{args.leave_one_out}')
 
 for env in envs:
     try:
