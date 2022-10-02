@@ -1,5 +1,5 @@
 {
-    "env": "hand-v0",
+    "env": "relocate-v0",
     "algorithm": "NPG",
     "seed": 42,
     "num_cpu": 5,

@@ -120,7 +120,7 @@ model = Discriminator()
 # feature = model.feature
 # discriminator = model.discriminator
 
-# load torchscript model, no need for defination of model class
+# load torchscript model, no need for definition of model class
 feature = torch.jit.load('./model/model_feature.pt')
 discriminator = torch.jit.load('./model/model_discriminator.pt')
 feature.eval()
@@ -176,7 +176,7 @@ def rollout(env, policy, num_traj=3, eval_mode=False, env_kwargs=None):
         done = False
         t = 0
 
-        path = demo_paths[ep]  # rl_paths or demo_paths
+        path = rl_paths[ep]  # rl_paths or demo_paths
         action_seq = path['actions']
         while t < horizon and t<len(action_seq) and done != True:
             # a, agent_info = policy.get_action(o)
