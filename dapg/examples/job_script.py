@@ -69,6 +69,7 @@ EXP_FILE = JOB_DIR + '/job_config.json'
 with open(EXP_FILE, 'w') as f:
     json.dump(job_data, f, indent=4)
 print(f'Configurations: \n ------------------------------------------------\n{job_data}')
+print(args, args.discriminator_reward)
 if args.discriminator_reward:
     log_dir = str('_'.join([job_data['env'], job_data['algorithm'], args.save_id, 'reg_reward']))
 else:
