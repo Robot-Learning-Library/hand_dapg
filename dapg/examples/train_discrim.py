@@ -25,7 +25,7 @@ if args.wandb_activate:
         args.wandb_group = ''
     if len(args.wandb_name) == 0:
         if args.leave_one_out is not None:
-            args.wandb_name = f'discriminator_no_{args.leave_one_out}'+args.save_id
+            args.wandb_name = f'discriminator_no_{args.leave_one_out}_'+args.save_id
         else:
             args.wandb_name = 'discriminator_'+args.save_id
     init_wandb(args)
