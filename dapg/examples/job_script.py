@@ -70,7 +70,7 @@ with open(EXP_FILE, 'w') as f:
     json.dump(job_data, f, indent=4)
 print(f'Configurations: \n ------------------------------------------------\n{job_data}')
 if args.discriminator_reward:
-    log_dir = str('_'.join([job_data['env'], job_data['algorithm'], args.save_id, '_reg_reward']))
+    log_dir = str('_'.join([job_data['env'], job_data['algorithm'], args.save_id, 'reg_reward']))
 else:
     log_dir = str('_'.join([job_data['env'], job_data['algorithm'], args.save_id]))
 if args.wandb_activate:
