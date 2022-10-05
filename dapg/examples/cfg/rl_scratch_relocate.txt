@@ -4,7 +4,7 @@
 
 'env'           :   'relocate-v0',
 'algorithm'     :   'NPG',
-'seed'          :   1,
+'seed'          :   1
 'num_cpu'       :   5,
 'save_freq'     :   25,
 'eval_rollouts' :   25,
@@ -20,8 +20,8 @@
 # RL parameters (all params related to PG, value function, DAPG etc.)
 
 'policy_size'   :   (32, 32),
-'vf_batch_size' :   128,
-'vf_epochs'     :   10,
+'vf_batch_size' :   64,
+'vf_epochs'     :   2,
 'vf_learn_rate' :   1e-3,
 'rl_step_size'  :   0.05,
 'rl_gamma'      :   0.995,
