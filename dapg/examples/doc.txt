@@ -1,15 +1,15 @@
 train:
-python job_script.py --config cfg/rl_scratch_door.txt --output results/rl_scratch_door_exp --record_video True
+python job_script.py --config cfg/rl_scratch_door.txt --output results/rl_scratch_door_exp --record_video
 
 collect data with RL:
-python collect_data.py --config cfg/rl_scratch_door.txt --output collect_data --record_video True
+python collect_data.py --config cfg/rl_scratch_door.txt --output collect_data --record_video
 
 train discriminator to distinguish RL collected and demo data:
 python train_discrim.py
-python train_discrim.py --save_id 0 --wandb_activate True --wandb_entity quantumiracle --itr 100000
+python train_discrim.py --save_id 0 --wandb_activate --wandb_entity quantumiracle --itr 100000
 
 test trained discriminator with a hand-only env:
-python test_discrim.py --config cfg/test_hand_only.txt --output test  --render True
+python test_discrim.py --config cfg/test_hand_only.txt --output test  --render
 
 train RL from scratch with discriminator reward:
-python job_script.py --output results/test --config cfg/rl_scratch_relocate.txt --discriminator_reward True
+python job_script.py --output results/test --config cfg/rl_scratch_relocate.txt --discriminator_reward

@@ -1,11 +1,11 @@
 {
-    "env": "pen-v0",
+    "env": "relocate-v0",
     "algorithm": "NPG",
-    "seed": 123,
+    "seed": 1,
     "num_cpu": 5,
     "save_freq": 25,
     "eval_rollouts": 25,
-    "exp_notes": "Example config for training policy with NPG from scratch on the pen-v0 task.",
+    "exp_notes": "Example config for training policy with NPG from scratch on the relocate-v0 task.",
     "demo_file": null,
     "bc_batch_size": 32,
     "bc_epochs": 5,
@@ -14,14 +14,14 @@
         32,
         32
     ],
-    "vf_batch_size": 64,
-    "vf_epochs": 2,
+    "vf_batch_size": 128,
+    "vf_epochs": 10,
     "vf_learn_rate": 0.001,
     "rl_step_size": 0.05,
     "rl_gamma": 0.995,
     "rl_gae": 0.97,
     "rl_num_traj": 200,
-    "rl_num_iter": 500,
+    "rl_num_iter": 5000,
     "lam_0": 0.0,
     "lam_1": 0.0
 }
