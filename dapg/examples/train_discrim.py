@@ -9,7 +9,7 @@ from common import Envs
 
 parser = argparse.ArgumentParser(description='Train discriminator.')
 parser.add_argument('--itr', type=int, default=10000, help='training epochs')
-parser.add_argument('--wandb_activate', type=bool, default=False, help='activate wandb for logging')
+parser.add_argument('--wandb_activate', action='store_true', help='activate wandb for logging')
 parser.add_argument('--wandb_entity', type=str, default='', help='wandb entity')
 parser.add_argument('--wandb_project', type=str, default='', help='wandb project')
 parser.add_argument('--wandb_group', type=str, default='', help='wandb group')
