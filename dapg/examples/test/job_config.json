@@ -1,12 +1,12 @@
 {
     "env": "relocate-v0",
-    "algorithm": "DAPG",
-    "seed": 123,
+    "algorithm": "NPG",
+    "seed": 1,
     "num_cpu": 5,
     "save_freq": 25,
     "eval_rollouts": 25,
-    "exp_notes": "Example config for training policy using DAPG for the relocate-v0 task.",
-    "demo_file": "../demonstrations/relocate-v0_demos.pickle",
+    "exp_notes": "Example config for training policy with NPG from scratch on the relocate-v0 task.",
+    "demo_file": null,
     "bc_batch_size": 32,
     "bc_epochs": 5,
     "bc_learn_rate": 0.001,
@@ -21,7 +21,7 @@
     "rl_gamma": 0.995,
     "rl_gae": 0.97,
     "rl_num_traj": 200,
-    "rl_num_iter": 500,
-    "lam_0": 0.01,
-    "lam_1": 0.95
+    "rl_num_iter": 5000,
+    "lam_0": 0.0,
+    "lam_1": 0.0
 }

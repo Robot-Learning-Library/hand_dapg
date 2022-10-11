@@ -35,6 +35,7 @@ parser.add_argument('--output', type=str, required=True, help='location to store
 parser.add_argument('--config', type=str, required=True, help='path to config file with exp params')
 parser.add_argument('--render', action='store_true', help='render the scene')
 parser.add_argument('--discriminator_reward', action='store_true', help='with discriminator as additional reward')
+parser.add_argument('--warm_up', type=int, default=0, help='warm up steps without discriminator reward')
 parser.add_argument('--record_video', action='store_true', help='whether recording the video')
 parser.add_argument('--record_video_interval', type=int, default=1000, help='record video interval (episode)')
 parser.add_argument('--record_video_length', type=int, default=100, help='record video length')
