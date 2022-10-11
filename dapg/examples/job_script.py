@@ -133,7 +133,8 @@ elif job_data['algorithm'] == 'DAPG':
     rl_agent = DAPG(e, policy, baseline, demo_paths,
                     normalized_step_size=job_data['rl_step_size'],
                     lam_0=job_data['lam_0'], lam_1=job_data['lam_1'],
-                    seed=job_data['seed'], save_logs=True, log_dir=log_dir
+                    seed=job_data['seed'], save_logs=True, log_dir=log_dir,
+                    discriminator_reward=args.discriminator_reward
                     )
 elif job_data['algorithm'] == 'NPGDiscriminator':
     discriminator = FCNetwork(e.spec.observation_dim+e.spec.action_dim, 1, hidden_sizes=job_data['policy_size'], output_nonlinearity='sigmoid')
