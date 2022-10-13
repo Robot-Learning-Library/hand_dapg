@@ -38,29 +38,31 @@ ts = timer.time()
 
 cwd = os.getcwd()
 print(cwd)
+
+envs = Envs
 # load data
 if args.leave_one_out is not None:
-    envs = Envs
     envs.remove(args.leave_one_out)
 model = Discriminator(itr=args.itr, save_logs=True, log_dir=run_name)
 
 for env in envs:
     try:
         # load rl collected paths
-        # rl_data_dir = f"collect_data/data/{env}"
-        # with open(rl_data_dir+'.pkl', 'rb') as f:
-        #     rl_paths = pickle.load(f)
-
-        # load dapg collected paths
-        rl_data_dir = f"collect_dapg_data/data/{env}"
+        rl_data_dir = f"collect_data/data/{env}"
         with open(rl_data_dir+'.pkl', 'rb') as f:
             rl_paths = pickle.load(f)
-        rl_paths = rl_paths[-200:]  # use latest 200 trajs
+        rl_paths = rl_paths[-1000:]  # use latest 1000 trajs
+
+        # load dapg collected paths as demo
+        dapg_data_dir = f"collect_dapg_data/data/{env}"
+        with open(dapg_data_dir+'.pkl', 'rb') as f:
+            demo_paths = pickle.load(f)
+        demo_paths = demo_paths[-1000:]  # use latest 1000 trajs
 
         # load demo paths
-        demo_data_dir = f'../demonstrations/{env}_demos'
-        with open(demo_data_dir+'.pickle', 'rb') as f:
-            demo_paths = pickle.load(f)
+        # demo_data_dir = f'../demonstrations/{env}_demos'
+        # with open(demo_data_dir+'.pickle', 'rb') as f:
+        #     demo_paths = pickle.load(f)
 
         print(f"Load {len(rl_paths)} RL paths and {len(demo_paths)} demo paths for env {env}.")
         model.process_data(env, true_paths=demo_paths, fake_paths=rl_paths)
