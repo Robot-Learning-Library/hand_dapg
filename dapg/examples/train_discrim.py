@@ -20,9 +20,9 @@ parser.add_argument('--leave_one_out', type=str, default=None, help='leave one e
 args = parser.parse_args()
 
 if args.leave_one_out is not None:
-    run_name = f'discriminator_no_{args.leave_one_out}'
+    run_name = f'discriminator_no_{args.leave_one_out}_{args.save_id}'
 else:
-    run_name = 'discriminator'
+    run_name = f'discriminator_{args.save_id}'
     
 if args.wandb_activate:
     if len(args.wandb_project) == 0:
@@ -30,7 +30,7 @@ if args.wandb_activate:
     if len(args.wandb_group) == 0:
         args.wandb_group = ''
     if len(args.wandb_name) == 0:
-        args.wandb_name = run_name+'_'+args.save_id
+        args.wandb_name = run_name
     init_wandb(args)
 os.makedirs('./model', exist_ok=True) # data saving dir
 
