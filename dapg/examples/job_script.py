@@ -35,6 +35,8 @@ parser.add_argument('--output', type=str, required=True, help='location to store
 parser.add_argument('--config', type=str, required=True, help='path to config file with exp params')
 parser.add_argument('--render', action='store_true', help='render the scene')
 parser.add_argument('--discriminator_reward', action='store_true', help='with discriminator as additional reward')
+parser.add_argument('--adaptive_scale', action='store_true', help='whether using adaptive scale of discriminator reward')
+parser.add_argument('--warm_up', type=int, default=0, help='warm up steps without discriminator reward')
 parser.add_argument('--record_video', action='store_true', help='whether recording the video')
 parser.add_argument('--record_video_interval', type=int, default=1000, help='record video interval (episode)')
 parser.add_argument('--record_video_length', type=int, default=100, help='record video length')
@@ -128,12 +130,13 @@ if not job_data['algorithm'] in ['DAPG', 'NPGDiscriminator']:
 # ===============================================================================
 if job_data['algorithm'] in ['NPG', 'BCRL']:
     rl_agent = NPG(e, policy, baseline, normalized_step_size=job_data['rl_step_size'],
-            seed=job_data['seed'], save_logs=True, log_dir=log_dir, discriminator_reward=args.discriminator_reward)
+            seed=job_data['seed'], save_logs=True, log_dir=log_dir, discriminator_reward=args.discriminator_reward, adaptive_scale=args.adaptive_scale)
 elif job_data['algorithm'] == 'DAPG':
     rl_agent = DAPG(e, policy, baseline, demo_paths,
                     normalized_step_size=job_data['rl_step_size'],
                     lam_0=job_data['lam_0'], lam_1=job_data['lam_1'],
-                    seed=job_data['seed'], save_logs=True, log_dir=log_dir
+                    seed=job_data['seed'], save_logs=True, log_dir=log_dir,
+                    discriminator_reward=args.discriminator_reward
                     )
 elif job_data['algorithm'] == 'NPGDiscriminator':
     discriminator = FCNetwork(e.spec.observation_dim+e.spec.action_dim, 1, hidden_sizes=job_data['policy_size'], output_nonlinearity='sigmoid')

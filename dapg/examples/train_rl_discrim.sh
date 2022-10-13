@@ -11,7 +11,7 @@ declare -a envs=('relocate')
 
 for i in ${!methods[@]}; do
     for j in ${!envs[@]}; do
-        nohup python -W ignore job_script.py --discriminator_reward --output results/$DATE/${methods[$i]}_${envs[$j]}_discrim_exp --config cfg/${methods[$i]}_${envs[$j]}.txt  --record_video --save_id $DATE --wandb_activate --wandb_entity quantumiracle >> log/$DATE/${methods[$i]}_${envs[$j]}_discrim.log &
+        nohup python -W ignore job_script.py --discriminator_reward --warm_up 500 --adaptive_scale --output results/$DATE/${methods[$i]}_${envs[$j]}_discrim_exp --config cfg/${methods[$i]}_${envs[$j]}.txt  --record_video --save_id $DATE --wandb_activate --wandb_entity quantumiracle >> log/$DATE/${methods[$i]}_${envs[$j]}_discrim.log &
         nohup python -W ignore job_script.py --output results/$DATE/${methods[$i]}_${envs[$j]}_exp --config cfg/${methods[$i]}_${envs[$j]}.txt  --record_video --save_id $DATE --wandb_activate --wandb_entity quantumiracle >> log/$DATE/${methods[$i]}_${envs[$j]}.log &
     done
 done
