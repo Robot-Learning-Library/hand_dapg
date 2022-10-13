@@ -18,16 +18,19 @@ parser.add_argument('--save_id', type=str, default='0', help='identification num
 parser.add_argument('--leave_one_out', type=str, default=None, help='leave one environment for test, the rest for training')
 
 args = parser.parse_args()
+
+if args.leave_one_out is not None:
+    run_name = f'discriminator_no_{args.leave_one_out}'
+else:
+    run_name = 'discriminator'
+    
 if args.wandb_activate:
     if len(args.wandb_project) == 0:
         args.wandb_project = 'hand_dapg'
     if len(args.wandb_group) == 0:
         args.wandb_group = ''
     if len(args.wandb_name) == 0:
-        if args.leave_one_out is not None:
-            args.wandb_name = f'discriminator_no_{args.leave_one_out}_'+args.save_id
-        else:
-            args.wandb_name = 'discriminator_'+args.save_id
+        args.wandb_name = run_name+'_'+args.save_id
     init_wandb(args)
 os.makedirs('./model', exist_ok=True) # data saving dir
 
@@ -39,19 +42,26 @@ print(cwd)
 if args.leave_one_out is not None:
     envs = Envs
     envs.remove(args.leave_one_out)
-model = Discriminator(itr=args.itr, save_logs=True, log_dir=f'./discriminator_no_{args.leave_one_out}')
+model = Discriminator(itr=args.itr, save_logs=True, log_dir=run_name)
 
 for env in envs:
     try:
         # load rl collected paths
-        rl_data_dir = f"collect_data/data/{env}"
+        # rl_data_dir = f"collect_data/data/{env}"
+        # with open(rl_data_dir+'.pkl', 'rb') as f:
+        #     rl_paths = pickle.load(f)
+
+        # load dapg collected paths
+        rl_data_dir = f"collect_dapg_data/data/{env}"
         with open(rl_data_dir+'.pkl', 'rb') as f:
             rl_paths = pickle.load(f)
+        rl_paths = rl_paths[-200:]  # use latest 200 trajs
 
         # load demo paths
         demo_data_dir = f'../demonstrations/{env}_demos'
         with open(demo_data_dir+'.pickle', 'rb') as f:
             demo_paths = pickle.load(f)
+
         print(f"Load {len(rl_paths)} RL paths and {len(demo_paths)} demo paths for env {env}.")
         model.process_data(env, true_paths=demo_paths, fake_paths=rl_paths)
     except:
@@ -61,5 +71,5 @@ print("========================================")
 print("Starting discriminator training phase")
 print("========================================")
 
-model.train(model_path=f'./model/no_{str(args.leave_one_out)}/')
+model.train(model_path=f'./dapg_jit_model/no_{str(args.leave_one_out)}/')
 print("time taken = %f" % (timer.time()-ts))
