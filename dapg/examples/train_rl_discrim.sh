@@ -4,9 +4,9 @@ mkdir -p log/$DATE
 mkdir -p results/$DATE
 # declare -a methods=('rl_scratch' 'bcrl' 'dapg' 'npg_discrim')
 declare -a envs=('relocate' 'pen' 'hammer' 'door')
-# declare -a methods=('rl_scratch')
+declare -a methods=('rl_scratch')
 # declare -a envs=('pen' 'hammer' 'door')
-declare -a envs=('relocate')
+# declare -a envs=('relocate')
 
 
 for i in ${!methods[@]}; do
